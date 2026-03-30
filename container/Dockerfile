@@ -51,6 +51,7 @@ RUN npm run build
 # Create workspace directories
 RUN mkdir -p /workspace/group /workspace/global /workspace/extra /workspace/ipc/messages /workspace/ipc/tasks /workspace/ipc/input
 
+RUN mkdir -p /tmp/dist && chmod 777 /tmp && chmod -R 777 /tmp/dist
 # Create entrypoint script
 # Container input (prompt, group info) is passed via stdin JSON.
 # Credentials are injected by the host's credential proxy — never passed here.
@@ -59,6 +60,7 @@ RUN printf '#!/bin/bash\nset -e\ncd /app && npx tsc --outDir /tmp/dist 2>&1 >&2\
 
 # Set ownership to node user (non-root) for writable directories
 RUN chown -R node:node /workspace && chmod 777 /home/node
+
 
 # Switch to non-root user (required for --dangerously-skip-permissions)
 USER node
